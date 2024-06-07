@@ -58,7 +58,6 @@ def webhook():
     leverage = data.get('leverage', 1)
 
     try:
-        close_position()
         if action == 'buy':
             order = exchange.create_market_buy_order(symbol, amount, {'leverage': leverage})
         elif action == 'short':
