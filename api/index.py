@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-import ccxt
 from dotenv import load_dotenv
 import os
 
