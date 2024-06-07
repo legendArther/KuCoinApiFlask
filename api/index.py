@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import ccxt
 from dotenv import load_dotenv
 import os
+import requests
 
 # Load environment variables from .env file
 load_dotenv()
