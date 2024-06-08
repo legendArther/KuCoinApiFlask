@@ -50,7 +50,7 @@ def kucoin_price(symbol):
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
-
+    close_position()
     # Extract action, symbol, and amount from the alert
     action = data.get('action')
     symbol = data.get('symbol')
