@@ -31,8 +31,8 @@ def about():
     try:
         data = request.json
         otp = data.get('myotp')
-        token = str(otp)  # Convert OTP to string
-        client.session_2fa(OTP=token)
+        token = otp
+        client.session_2fa(OTP=otp)
         client.scrip_master()
         return 'About'
     except Exception as e:
