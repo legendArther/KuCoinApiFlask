@@ -31,7 +31,8 @@ def otp():
     try:
         args = request.args
         print(args)  # This will print the query parameters as a dictionary
-        return f"Received arguments: {args}"
+        myotp = request.args.get('myotp')
+        return myotp
     except Exception as e:
         print("Exception : %s\n" % e)
         return str(e)
