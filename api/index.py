@@ -32,10 +32,10 @@ def about():
         data = request.json
         otp = data.get('myotp')
         token = otp
-        client.session_2fa(OTP=str(otp))
+        #client.session_2fa(OTP=str(otp))
         return 'About'
     except Exception as e:
-        print("Exception when calling SessionApi->session_2fa: %s\n" % e)
+        print("Exception : %s\n" % e)
         return str(e)
     
 @app.route('/buy')
