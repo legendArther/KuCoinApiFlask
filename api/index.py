@@ -37,6 +37,21 @@ def about():
         return 'About'
     except Exception as e:
         print("Exception when calling SessionApi->session_2fa: %s\n" % e)
-        return str(e)  # Optionally handle the exception or log it
+        return str(e)
+    
+@app.route('/buy')
+def buy():
+    order_response = client.place_order(
+        exchange_segment='NSE',  # Example: National Stock Exchange Futures & Options segment
+        product='MIS',  # Specify that it's an options order
+        price='',  # Price at which you want to buy/sell the option
+        order_type='MKT',  # Order type, e.g., 'LIMIT', 'MARKET'
+        quantity= '1',  # Quantity of the options contract
+        validity='DAY',  # Order validity, e.g., 'DAY', 'IOC'
+        trading_symbol='TATASTEEL-EQ',  # Example trading symbol for the option
+        transaction_type='B'  # Transaction type: 'BUY' or 'SELL'
+    )
+
+    print("Order Response:", order_response)
 if __name__ == '__main__':
     app.run(debug=True)
