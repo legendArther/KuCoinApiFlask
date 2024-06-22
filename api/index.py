@@ -29,15 +29,29 @@ def home():
 @app.route('/otp')
 def about():
     try:
-        data = request.json
+        data = request.json  # Ensure you are getting JSON data
         otp = data.get('myotp')
         token = otp
-        client.session_2fa(OTP=otp)
-        client.scrip_master()
-        return 'About'
+
+        # Set the correct headers and payload for session_2fa
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        payload = {
+            'OTP': otp
+        }
+
+        # Assuming client is an instance of a class that has session_2fa and scrip_master methods
+        response = client.session_2fa(payload, headers=headers)
+
+        if response.status_code == 200:
+            client.scrip_master()
+            return 'About'
+        else:
+            return f"Error: {response.text}", response.status_code
     except Exception as e:
-        print("Exception when calling SessionApi->session_2fa: %s\n" % e)
-        return str(e)
+        return str(e), 500
+
     
 @app.route('/buy')
 def buy():
