@@ -31,8 +31,7 @@ def create_app():
                 password=app.config['NEOAPI_PASSWORD']
             )
         return g.neoapi_client
-    
-    get_neoapi_client()
+    client = app.get_neoapi_client()
 
     @app.teardown_appcontext
     def close_neoapi_client(e=None):
