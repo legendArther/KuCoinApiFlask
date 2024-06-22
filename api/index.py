@@ -29,11 +29,9 @@ def home():
 @app.route('/otp')
 def otp():
     try:
-        data = request.json
-        otp = data.get('myotp')
-        token = otp
-        #client.session_2fa(OTP=str(otp))
-        return data
+        args = request.args
+        print(args)  # This will print the query parameters as a dictionary
+        return f"Received arguments: {args}"
     except Exception as e:
         print("Exception : %s\n" % e)
         return str(e)
