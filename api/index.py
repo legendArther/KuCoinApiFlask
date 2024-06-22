@@ -16,22 +16,30 @@ def create_app():
     app.config['NEOAPI_PASSWORD'] = os.getenv('NEOAPI_PASSWORD')
     app.config['NEOAPI_ENVIRONMENT'] = 'prod'
 
+    # Create and login NeoAPI client on app initialization
+    neoapi_client = NeoAPI(
+        consumer_key=app.config['NEOAPI_CONSUMER_KEY'],
+        consumer_secret=app.config['NEOAPI_CONSUMER_SECRET'],
+        environment=app.config['NEOAPI_ENVIRONMENT'],
+        access_token=None,
+        neo_fin_key=None
+    )
+    
+    # Perform login
+    try:
+        neoapi_client.login(
+            mobilenumber=app.config['NEOAPI_MOBILE_NUMBER'],
+            password=app.config['NEOAPI_PASSWORD']
+        )
+        print("NeoAPI login successful")
+    except Exception as e:
+        print(f"NeoAPI login failed: {str(e)}")
+        # You might want to raise an exception here if login is critical
+
     def get_neoapi_client():
         if 'neoapi_client' not in g:
-            g.neoapi_client = NeoAPI(
-                consumer_key=app.config['NEOAPI_CONSUMER_KEY'],
-                consumer_secret=app.config['NEOAPI_CONSUMER_SECRET'],
-                environment=app.config['NEOAPI_ENVIRONMENT'],
-                access_token=None,
-                neo_fin_key=None
-            )
-            # Perform login
-            g.neoapi_client.login(
-                mobilenumber=app.config['NEOAPI_MOBILE_NUMBER'],
-                password=app.config['NEOAPI_PASSWORD']
-            )
+            g.neoapi_client = neoapi_client
         return g.neoapi_client
-    client = app.get_neoapi_client()
 
     @app.teardown_appcontext
     def close_neoapi_client(e=None):
@@ -46,7 +54,7 @@ def create_app():
 
     @app.route('/')
     def home():
-        return 'Hello'
+        return 'Hello, NeoAPI client is initialized and logged in'
 
     @app.route('/otp', methods=['POST'])
     def handle_otp():
