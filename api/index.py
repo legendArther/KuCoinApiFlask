@@ -28,12 +28,22 @@ def home():
 
 @app.route('/otp')
 def about():
-    data = request.json
-    otp = data.get('otp')
-    token=otp
-    client.session_2fa(OTP=token)
-    client.scrip_master()
-    return 'About'
+    if request.is_json:
+        data = request.get_json()
+        otp = data.get('myotp')
+        if otp:
+            try:
+                token = int(otp)
+                # Assuming client is a pre-configured client instance
+                client.session_2fa(OTP=token)
+                client.scrip_master()
+                return jsonify({'message': 'OTP processed successfully'}), 200
+            except ValueError:
+                return jsonify({'error': 'OTP must be an integer'}), 400
+        else:
+            return jsonify({'error': 'OTP not provided'}), 400
+    else:
+        return jsonify({'error': 'Request must be JSON'}), 415
 
 if __name__ == '__main__':
     app.run(debug=True)
