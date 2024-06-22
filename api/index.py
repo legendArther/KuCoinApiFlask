@@ -26,7 +26,7 @@ cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 def home():
     return 'Hello'
 
-@app.route('/otp', methods=['POST'])
+@app.route('/otp')
 def otp():
     try:
         data = request.json
