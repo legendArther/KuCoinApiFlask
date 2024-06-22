@@ -11,19 +11,19 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Your KuCoin API credentials loaded from environment variables
-api_key = os.getenv('KUCOIN_API_KEY')
-api_secret = os.getenv('KUCOIN_API_SECRET')
-api_password = os.getenv('KUCOIN_API_PASSWORD')
+@app.before_first_request
+def setup_server_session():
+    # Example: Log in to an external service and store the session token
+    
+    no = "+918839000041"
+    pas = "Happy123$"
+    ck = "N7RD0Ydol8qBNE22SMffcT3FXpMa"
+    cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 
-# Initialize the KuCoin futures exchange
-exchange = ccxt.kucoinfutures({
-    'apiKey': api_key,
-    'secret': api_secret,
-    'password': api_password,
-    'enableRateLimit': True,
-})
-
+    client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
+                    access_token=None, neo_fin_key=None)
+    client.login(mobilenumber=no, password=pas)
+    
 @app.route('/')
 def home():
     return 'Hello'
@@ -59,43 +59,10 @@ def webhook():
     amount = data.get('amount')
     leverage = data.get('leverage', 1)
 
-    try:
-        if action == 'buy':
-            order = exchange.create_market_buy_order(symbol, amount, {'leverage': leverage})
-        elif action == 'short':
-            order = exchange.create_market_sell_order(symbol, amount, {'leverage': leverage})
-        else:
-            return jsonify({'error': 'Invalid action'}), 400
-
-        return jsonify(order)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
 @app.route('/kucoin/close', methods=['POST'])
 def close_position():
     data = request.json
-    symbol = data['symbol']
-
-    try:
-        # Fetch open positions
-        positions = exchange.fetch_positions([symbol])
-        
-        for position in positions:
-            if position['symbol'] == symbol and position['contracts'] > 0:
-                side = 'sell' if position['side'] == 'long' else 'buy'
-                amount = position['contracts']
-
-                # Create order to close the position
-                if side == 'sell':
-                    order = exchange.create_market_sell_order(symbol, amount)
-                else:
-                    order = exchange.create_market_buy_order(symbol, amount)
-
-                return jsonify(order)
-
-        return jsonify({'error': 'No open position found for the given symbol'}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
