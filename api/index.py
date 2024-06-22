@@ -13,14 +13,13 @@ app = Flask(__name__)
 print('login')
 
 no = "+918839000041"
-pas = "Happy123$"
+pas = "Happy123$$"
 ck = "N7RD0Ydol8qBNE22SMffcT3FXpMa"
 cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 
 client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
                 access_token=None, neo_fin_key=None)
 client.login(mobilenumber=no, password=pas)
-client.session_2fa(OTP="1111")
 
 
 @app.route('/')
