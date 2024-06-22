@@ -27,7 +27,7 @@ def home():
     return 'Hello'
 
 @app.route('/otp', methods=['POST'])
-def about():
+def otp():
     try:
         data = request.json
         otp = data.get('myotp')
