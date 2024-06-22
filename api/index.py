@@ -28,22 +28,15 @@ def home():
 
 @app.route('/otp')
 def about():
-    if request.is_json:
-        data = request.get_json()
+    try:
+        data = request.json
         otp = data.get('myotp')
-        if otp:
-            try:
-                token = int(otp)
-                # Assuming client is a pre-configured client instance
-                client.session_2fa(OTP=token)
-                client.scrip_master()
-                return jsonify({'message': 'OTP processed successfully'}), 200
-            except ValueError:
-                return jsonify({'error': 'OTP must be an integer'}), 400
-        else:
-            return jsonify({'error': 'OTP not provided'}), 400
-    else:
-        return jsonify({'error': 'Request must be JSON'}), 415
-
+        token = str(otp)  # Convert OTP to string
+        client.session_2fa(OTP=token)
+        client.scrip_master()
+        return 'About'
+    except Exception as e:
+        print("Exception when calling SessionApi->session_2fa: %s\n" % e)
+        return str(e)  # Optionally handle the exception or log it
 if __name__ == '__main__':
     app.run(debug=True)
