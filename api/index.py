@@ -26,14 +26,14 @@ cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 def home():
     return 'Hello'
 
-@app.route('/otp')
+@app.route('/otp', methods=['POST'])
 def about():
     try:
         data = request.json
         otp = data.get('myotp')
         token = otp
         #client.session_2fa(OTP=str(otp))
-        return 'otp'
+        return data
     except Exception as e:
         print("Exception : %s\n" % e)
         return str(e)
