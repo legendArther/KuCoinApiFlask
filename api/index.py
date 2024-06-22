@@ -20,6 +20,7 @@ cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
                 access_token=None, neo_fin_key=None)
 client.login(mobilenumber=no, password=pas)
+client.session_2fa(OTP="1111")
 
 
 @app.route('/')
@@ -29,29 +30,14 @@ def home():
 @app.route('/otp')
 def about():
     try:
-        data = request.json  # Ensure you are getting JSON data
+        data = request.json
         otp = data.get('myotp')
         token = otp
-
-        # Set the correct headers and payload for session_2fa
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        payload = {
-            'OTP': otp
-        }
-
-        # Assuming client is an instance of a class that has session_2fa and scrip_master methods
-        response = client.session_2fa(payload, headers=headers)
-
-        if response.status_code == 200:
-            client.scrip_master()
-            return 'About'
-        else:
-            return f"Error: {response.text}", response.status_code
+        client.session_2fa(OTP=str(otp))
+        return 'About'
     except Exception as e:
-        return str(e), 500
-
+        print("Exception when calling SessionApi->session_2fa: %s\n" % e)
+        return str(e)
     
 @app.route('/buy')
 def buy():
