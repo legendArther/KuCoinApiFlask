@@ -1,7 +1,7 @@
+import threading
 from flask import Flask, jsonify, request
 import ccxt
 from dotenv import load_dotenv
-from apscheduler.schedulers.background import BackgroundScheduler
 import os
 import requests
 import neo_api_client
@@ -121,9 +121,14 @@ def get_max_quantity():
         print(f"Exception when fetching available cash: {e}")
         return 0
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(get_max_quantity, 'interval', minutes=15)
-scheduler.start()
+
+def run_periodic_task():
+    while True:
+        get_max_quantity()
+        time.sleep(900)  # Sleep for 15 minutes (900 seconds)
+
+# Start the periodic task in a separate thread
+threading.Thread(target=run_periodic_task, daemon=True).start()
 
 if __name__ == '__main__':
     app.run(debug=True)
