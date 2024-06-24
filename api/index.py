@@ -1,4 +1,3 @@
-import threading
 from flask import Flask, jsonify, request
 import ccxt
 from dotenv import load_dotenv
@@ -6,7 +5,6 @@ import os
 import requests
 import neo_api_client
 from neo_api_client import NeoAPI
-import time
   
 # Load environment variables from .env file
 load_dotenv()
@@ -120,15 +118,6 @@ def get_max_quantity():
     except Exception as e:
         print(f"Exception when fetching available cash: {e}")
         return 0
-
-
-def run_periodic_task():
-    while True:
-        get_max_quantity()
-        time.sleep(900)  # Sleep for 15 minutes (900 seconds)
-
-# Start the periodic task in a separate thread
-threading.Thread(target=run_periodic_task, daemon=True).start()
 
 if __name__ == '__main__':
     app.run(debug=True)
