@@ -32,8 +32,7 @@ def otp():
     try:
         myotp = request.args.get('myotp')
         client.session_2fa(OTP=str(myotp))
-        get_max_quantity() #comment
-
+     #   get_max_quantity() #comment
         return myotp
     except Exception as e:
         print("Exception : %s\n" % e)
