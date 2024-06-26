@@ -24,8 +24,8 @@ client.login(mobilenumber=no, password=pas)
 
 @app.route('/')
 def home():
-    quantity = get_max_quantity()
-    return ('Hello '+ quantity)
+    quantity = test()
+    return (quantity)
 
 @app.route('/otp', methods=['GET'])
 def otp():
@@ -42,7 +42,7 @@ def otp():
 def buy():
     symbol = request.args.get('symbol')
     try:
-        if symbol == 'B':
+        if symbol == 'buy':
             order_response = order('B')
             # Check the status of the order response
             if order_response['stat'] != 'Ok':
@@ -50,7 +50,7 @@ def buy():
 
             return jsonify({'message': 'Order placed successfully'}), 200
         
-        elif symbol == 'S':
+        elif symbol == 'sell':
             order_response = order('S')
             if order_response['stat'] != 'Ok':
                 return jsonify(order_response), 400  # Returning a 400 Bad Request with the error details
@@ -97,6 +97,27 @@ def order(symb):
     
 def get_max_quantity():
 
+    try:
+        margin_data = client.margin_required(
+            exchange_segment="nse_cm",  # Example segment
+            price="0",  # Dummy price to get margin data
+            order_type="MKT",
+            product="MIS",
+            quantity="1",  # Dummy quantity
+            instrument_token="3499",  # Dummy instrument token, replace with a valid one
+            transaction_type="B",
+        )
+        available_cash = float(margin_data['data']['avlCash'])
+        margin = float(margin_data['data']['totMrgnUsd'])
+        max_quantity = int(available_cash / margin)
+        print(f"Available Cash: {available_cash}")
+        print(f"Total Margin: {margin}")
+        print(f"Maximum Quantity: {max_quantity}")
+        return max_quantity
+    except Exception as e:
+        print(f"Exception when fetching available cash: {e}")
+        return 0
+def test():
     try:
         margin_data = client.margin_required(
             exchange_segment="nse_cm",  # Example segment
