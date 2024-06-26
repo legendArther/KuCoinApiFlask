@@ -27,6 +27,11 @@ def home():
     quantity = test()
     return (quantity)
 
+@app.route('/login')
+def login():
+    client.login(mobilenumber=no, password=pas)
+
+
 @app.route('/otp', methods=['GET'])
 def otp():
     try:
