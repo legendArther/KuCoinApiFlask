@@ -113,7 +113,7 @@ def get_max_quantity():
         print(f"Available Cash: {available_cash}")
         print(f"Total Margin: {margin}")
         print(f"Maximum Quantity: {max_quantity}")
-        return max_quantity
+        return str(max_quantity)
     except Exception as e:
         print(f"Exception when fetching available cash: {e}")
         return 0
@@ -134,7 +134,7 @@ def test():
         print(f"Available Cash: {available_cash}")
         print(f"Total Margin: {margin}")
         print(f"Maximum Quantity: {max_quantity}")
-        return max_quantity
+        return str(max_quantity)
     except Exception as e:
         print(f"Exception when fetching available cash: {e}")
         return 0
