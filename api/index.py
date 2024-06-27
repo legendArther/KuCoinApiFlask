@@ -31,7 +31,6 @@ def home():
 def login():
     client.login(mobilenumber=no, password=pas)
 
-
 @app.route('/otp', methods=['GET'])
 def otp():
     try:
