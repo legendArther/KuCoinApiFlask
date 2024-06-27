@@ -22,7 +22,7 @@ client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
 client.login(mobilenumber=no, password=pas)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     quantity = test()
     return (quantity)
