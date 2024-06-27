@@ -43,7 +43,7 @@ def otp():
         print("Exception : %s\n" % e)
         return str(e)
     
-@app.route('/buy', methods=['GET'])
+@app.route('/buy', methods=['GET', 'POST'])
 def buy():
     symbol = request.args.get('symbol')
     try:
