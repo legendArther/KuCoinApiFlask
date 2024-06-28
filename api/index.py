@@ -1,9 +1,5 @@
 from flask import Flask, jsonify, request
-import ccxt
 from dotenv import load_dotenv
-import os
-import requests
-import neo_api_client
 from neo_api_client import NeoAPI
   
 # Load environment variables from .env file
