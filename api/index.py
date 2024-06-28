@@ -115,8 +115,7 @@ def get_max_quantity():
         print(f"Maximum Quantity: {max_quantity}")
         return str(max_quantity)
     except Exception as e:
-        print(f"Exception when fetching available cash: {e}")
-        return 0
+        return(f"Exception when fetching available cash: {e}")
 def test():
     try:
         margin_data = client.margin_required(
@@ -136,8 +135,7 @@ def test():
         print(f"Maximum Quantity: {max_quantity}")
         return str(max_quantity)
     except Exception as e:
-        print(f"Exception when fetching available cash: {e}")
-        return 0
+        return(f"Exception when fetching available cash: {e}")
 
 if __name__ == '__main__':
     app.run(debug=True)
