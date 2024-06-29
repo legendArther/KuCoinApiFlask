@@ -6,7 +6,7 @@ from neo_api_client import NeoAPI
 load_dotenv()
 app = Flask(__name__)
 
-print('login')
+#print('login')
 
 no = "+918839000041"
 pas = "Happy123$$"
