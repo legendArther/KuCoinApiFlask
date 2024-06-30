@@ -8,14 +8,14 @@ app = Flask(__name__)
 
 #print('login')
 
-# no = "+918839000041"
-# pas = "Happy123$$"
-# ck = "N7RD0Ydol8qBNE22SMffcT3FXpMa"
-# cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
+no = "+918839000041"
+pas = "Happy123$$"
+ck = "N7RD0Ydol8qBNE22SMffcT3FXpMa"
+cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 
-# client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
-#                 access_token=None, neo_fin_key=None)
-# client.login(mobilenumber=no, password=pas)
+client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
+                access_token=None, neo_fin_key=None)
+client.login(mobilenumber=no, password=pas)
 
 
 @app.route('/')
@@ -62,20 +62,20 @@ def buy():
         return jsonify({'error': error_message}), 500  # Returning a 500 Internal Server Error with the exception message
 
 def order(symb):
-    # try:
-    #     response = client.positions()
-    #     print(response)
-    #     quantity = 1  # Default quantity
-    #     for position in response['data']:
-    #         trading_symbol = position['trdSym']
-    #         buy_quantity = int(position['flBuyQty'])
-    #         sell_quantity = int(position['flSellQty'])
-    #         net_quantity = abs(buy_quantity - sell_quantity)
-    #         quantity = net_quantity*2
-    #         print(f"Net Quantity to get: {net_quantity}")
-    # except Exception as e:
-    #     print("Exception when calling PositionsApi->positions: %s\n" % e)
-    #     #quantity = get_max_quantity()
+    try:
+        response = client.positions()
+        print(response)
+        quantity = 1  # Default quantity
+        for position in response['data']:
+            trading_symbol = position['trdSym']
+            buy_quantity = int(position['flBuyQty'])
+            sell_quantity = int(position['flSellQty'])
+            net_quantity = abs(buy_quantity - sell_quantity)
+            totalquantity = net_quantity*2
+            print(f"Net Quantity to get: {net_quantity}")
+    except Exception as e:
+        print("Exception when calling PositionsApi->positions: %s\n" % e)
+        #quantity = get_max_quantity()
 
     try:
         order_response = client.place_order(
@@ -83,7 +83,7 @@ def order(symb):
             product='MIS',
             price='',
             order_type='MKT',
-            quantity='1',
+            quantity=totalquantity,
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
