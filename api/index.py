@@ -24,6 +24,8 @@ def home():
 
 @app.route('/login')
 def login():
+    client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
+                access_token=None, neo_fin_key=None)
     res = client.login(mobilenumber=no, password=pas)
     return(res)
 
