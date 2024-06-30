@@ -62,6 +62,7 @@ def buy():
         return jsonify({'error': error_message}), 500  # Returning a 500 Internal Server Error with the exception message
 
 def order(symb):
+    totalquantity = 0  # Initialize totalquantity
     try:
         response = client.positions()
         print(response)
@@ -71,7 +72,7 @@ def order(symb):
             buy_quantity = int(position['flBuyQty'])
             sell_quantity = int(position['flSellQty'])
             net_quantity = abs(buy_quantity - sell_quantity)
-            totalquantity = net_quantity*2
+            totalquantity += net_quantity * 2
             print(f"Net Quantity to get: {net_quantity}")
     except Exception as e:
         print("Exception when calling PositionsApi->positions: %s\n" % e)
