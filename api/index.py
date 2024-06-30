@@ -84,7 +84,7 @@ def order(symb):
             product='MIS',
             price='',
             order_type='MKT',
-            quantity=totalquantity,
+            quantity='1',
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
