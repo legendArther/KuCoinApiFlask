@@ -62,29 +62,14 @@ def buy():
         return jsonify({'error': error_message}), 500  # Returning a 500 Internal Server Error with the exception message
 
 def order(symb):
-    totalquantity = 0  # Initialize totalquantity
-    try:
-        response = client.positions()
-        print(response)
-        quantity = 1  # Default quantity
-        for position in response['data']:
-            trading_symbol = position['trdSym']
-            buy_quantity = int(position['flBuyQty'])
-            sell_quantity = int(position['flSellQty'])
-            net_quantity = abs(buy_quantity - sell_quantity)
-            totalquantity += net_quantity * 2
-            print(f"Net Quantity to get: {net_quantity}")
-    except Exception as e:
-        print("Exception when calling PositionsApi->positions: %s\n" % e)
-        #quantity = get_max_quantity()
-
+    max_quantity = get_max_quantity()
     try:
         order_response = client.place_order(
             exchange_segment='nse_cm',
             product='MIS',
             price='',
             order_type='MKT',
-            quantity=str(totalquantity),
+            quantity=str(max_quantity),
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
@@ -97,7 +82,6 @@ def order(symb):
     
     
 def get_max_quantity():
-
     try:
         margin_data = client.margin_required(
             exchange_segment="nse_cm",  # Example segment
