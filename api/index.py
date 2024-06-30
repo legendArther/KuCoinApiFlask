@@ -15,7 +15,6 @@ cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 
 client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
                 access_token=None, neo_fin_key=None)
-client.login(mobilenumber=no, password=pas)
 
 
 @app.route('/')
@@ -25,7 +24,8 @@ def home():
 
 @app.route('/login')
 def login():
-    client.login(mobilenumber=no, password=pas)
+    res = client.login(mobilenumber=no, password=pas)
+    return(res)
 
 @app.route('/otp', methods=['GET'])
 def otp():
@@ -84,7 +84,7 @@ def order(symb):
             product='MIS',
             price='',
             order_type='MKT',
-            quantity='1',
+            quantity=str(totalquantity),
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
