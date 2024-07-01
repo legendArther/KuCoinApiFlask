@@ -56,8 +56,8 @@ def buytest():
 
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
-    print(request.args)
-    symbol = request.args.get('symbol')
+    print(request.json)
+    symbol = request.json.get('symbol')
     try:
         if symbol == 'buy':
             order_response = order('B')
