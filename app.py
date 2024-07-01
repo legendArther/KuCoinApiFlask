@@ -38,11 +38,21 @@ def otp():
         print("Exception : %s\n" % e)
         return str(e)
     
-@app.route('/buytest', methods=['GET', 'POST'])
+@app.route('/buytest', methods=['GET','POST'])
 def buytest():
-    print(request.args)
-    return(request.args)
-    #symbol = request.args.get('symbol')
+    # Handle URL parameters
+    url_params = dict(request.args)
+    print(f"Received URL parameters: {url_params}")
+
+    # Handle JSON body data
+    json_data = request.json if request.is_json else {}
+    print(f"Received JSON data: {json_data}")
+
+    # Combine both data sources, with JSON taking precedence
+    combined_data = {**url_params, **json_data}
+    print(f"Combined data: {combined_data}")
+
+    return jsonify(combined_data)
 
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
