@@ -40,6 +40,7 @@ def otp():
     
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
+    print(request.args)
     symbol = request.args.get('symbol')
     try:
         if symbol == 'buy':
@@ -70,7 +71,7 @@ def order(symb):
             product='MIS',
             price='',
             order_type='MKT',
-            quantity=str(max_quantity),
+            quantity='1',
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
@@ -114,7 +115,11 @@ def get_positions_quantity():
                 net_quantity = abs(buy_quantity - sell_quantity)
                 totalquantity += net_quantity * 2
             print(f"Total Quantity from positions: {totalquantity}")
+        else:
+            return 0
         return totalquantity
+
+
     except Exception as e:
         print(f"Exception when calling PositionsApi->positions: {e}")
         return 0

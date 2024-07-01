@@ -13,14 +13,14 @@ pas = "Happy123$$"
 ck = "N7RD0Ydol8qBNE22SMffcT3FXpMa"
 cs = "OfE3Hxw4QBAj7jSbrYsM5V01EQYa"
 
-client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
-                access_token=None, neo_fin_key=None)
-client.login(mobilenumber=no, password=pas)
+# client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
+#                 access_token=None, neo_fin_key=None)
+# client.login(mobilenumber=no, password=pas)
 
 @app.route('/')
 def home():
-    quantity = test()
-    return (quantity)
+    # quantity = test()
+    return ("quantity")
 
 @app.route('/login')
 def login():
