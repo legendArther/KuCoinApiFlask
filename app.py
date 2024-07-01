@@ -38,6 +38,11 @@ def otp():
         print("Exception : %s\n" % e)
         return str(e)
     
+@app.route('/buytest', methods=['GET', 'POST'])
+def buytest():
+    return(request.args)
+    #symbol = request.args.get('symbol')
+
 @app.route('/buy', methods=['GET', 'POST'])
 def buy():
     print(request.args)
