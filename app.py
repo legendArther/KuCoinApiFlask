@@ -17,7 +17,6 @@ client = NeoAPI(consumer_key=ck, consumer_secret=cs, environment='prod',
                 access_token=None, neo_fin_key=None)
 client.login(mobilenumber=no, password=pas)
 
-
 @app.route('/')
 def home():
     quantity = test()
@@ -25,9 +24,8 @@ def home():
 
 @app.route('/login')
 def login():
-    response = client.login(mobilenumber=no, password=pas)
-    return (response)
-
+    res = client.login(mobilenumber=no, password=pas)
+    return(res)
 
 @app.route('/otp', methods=['GET'])
 def otp():
@@ -64,28 +62,15 @@ def buy():
         return jsonify({'error': error_message}), 500  # Returning a 500 Internal Server Error with the exception message
 
 def order(symb):
-    # try:
-    #     response = client.positions()
-    #     print(response)
-    #     quantity = 1  # Default quantity
-    #     for position in response['data']:
-    #         trading_symbol = position['trdSym']
-    #         buy_quantity = int(position['flBuyQty'])
-    #         sell_quantity = int(position['flSellQty'])
-    #         net_quantity = abs(buy_quantity - sell_quantity)
-    #         quantity = net_quantity*2
-    #         print(f"Net Quantity to get: {net_quantity}")
-    # except Exception as e:
-    #     print("Exception when calling PositionsApi->positions: %s\n" % e)
-    #     #quantity = get_max_quantity()
-
+    pos = get_positions_quantity()
+    max_quantity = pos if pos >= 1 else get_max_quantity()
     try:
         order_response = client.place_order(
             exchange_segment='nse_cm',
             product='MIS',
             price='',
             order_type='MKT',
-            quantity='1',
+            quantity=str(max_quantity),
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
@@ -98,7 +83,6 @@ def order(symb):
     
     
 def get_max_quantity():
-
     try:
         margin_data = client.margin_required(
             exchange_segment="nse_cm",  # Example segment
@@ -118,6 +102,23 @@ def get_max_quantity():
         return str(max_quantity)
     except Exception as e:
         return(f"Exception when fetching available cash: {e}")
+def get_positions_quantity():
+    try:
+        response = client.positions()
+        print("Positions response:", response)
+        totalquantity = 0  # Initialize totalquantity
+        if response and 'data' in response:
+            for position in response['data']:
+                buy_quantity = int(position.get('flBuyQty', 0))
+                sell_quantity = int(position.get('flSellQty', 0))
+                net_quantity = abs(buy_quantity - sell_quantity)
+                totalquantity += net_quantity * 2
+            print(f"Total Quantity from positions: {totalquantity}")
+        return totalquantity
+    except Exception as e:
+        print(f"Exception when calling PositionsApi->positions: {e}")
+        return 0
+
 def test():
     try:
         margin_data = client.margin_required(
