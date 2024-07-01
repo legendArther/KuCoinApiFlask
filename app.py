@@ -40,6 +40,7 @@ def otp():
     
 @app.route('/buytest', methods=['GET', 'POST'])
 def buytest():
+    print(request.args)
     return(request.args)
     #symbol = request.args.get('symbol')
 
