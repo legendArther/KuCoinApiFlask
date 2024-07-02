@@ -80,14 +80,16 @@ def buy():
 
 def order(symb):
     pos = get_positions_quantity()
-    max_quantity = pos if pos >= 1 else get_max_quantity()
+    #max_quantity = pos if pos >= 1 else get_max_quantity()
+    max_quantity = 2 if pos >= 1 else 1
+
     try:
         order_response = client.place_order(
             exchange_segment='nse_cm',
             product='MIS',
             price='',
             order_type='MKT',
-            quantity='1',
+            quantity=str(max_quantity),
             validity='DAY',
             trading_symbol='TATASTEEL-EQ',
             transaction_type=symb
