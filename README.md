@@ -1,28 +1,107 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask&demo-title=Flask%20%2B%20Vercel&demo-description=Use%20Flask%202%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+# NeoAPI Trading Bot
 
-# Flask + Vercel
+This is a Flask-based Python application that interacts with the **Neo API** to manage trading activities on the **NSE (National Stock Exchange)**. The app provides RESTful endpoints for login, OTP verification, checking margins, placing buy/sell orders, and fetching position details. It's designed for users who want to automate trading workflows.
 
-This example shows how to use Flask 2 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+---
 
-## Demo
+## Features
 
-https://flask-python-template.vercel.app/
+1. **User Authentication**  
+   - Login via mobile number and password.  
+   - Supports OTP-based 2FA for secure access.
 
-## How it Works
+2. **Trade Execution**  
+   - Place market orders (`BUY`/`SELL`) with dynamic quantity adjustment based on positions and available cash.  
+   - Supports intraday (`MIS`) trades.
 
-This example uses the Web Server Gateway Interface (WSGI) with Flask to enable handling requests on Vercel with Serverless Functions.
+3. **Margin Calculation**  
+   - Calculate the maximum quantity for trades based on available cash and margin requirements.
 
-## Running Locally
+4. **Position Tracking**  
+   - Fetch current position details and calculate total net quantities for optimized trading.
 
-```bash
-npm i -g vercel
-vercel dev
-```
+5. **API Testing**  
+   - Endpoint for testing order placement and margin calculations.
 
-Your Flask application is now available at `http://localhost:3000`.
+6. **Error Handling**  
+   - Provides detailed error messages for API issues or invalid inputs.
 
-## One-Click Deploy
+---
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+## Endpoints
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask&demo-title=Flask%20%2B%20Vercel&demo-description=Use%20Flask%202%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+1. `/`  
+   - Returns the maximum quantity available for trading.  
+   - **Method:** GET  
+
+2. `/login`  
+   - Authenticates the user with their credentials.  
+   - **Method:** GET  
+
+3. `/otp`  
+   - Verifies the OTP for completing the login process.  
+   - **Method:** GET  
+   - **Parameters:**  
+     - `myotp`: The OTP received on the registered mobile number.  
+
+4. `/buytest`  
+   - Returns a combined JSON response of URL parameters and POST data for testing.  
+   - **Methods:** GET, POST  
+
+5. `/buy`  
+   - Executes a buy or sell order.  
+   - **Methods:** GET, POST  
+   - **JSON Body:**  
+     - `symbol`: `"buy"` or `"sell"`.  
+
+---
+
+## Setup
+
+1. Clone the repository:  
+   ```bash
+   git clone <repository_url>
+   cd neoapi-trading-bot
+   ```
+
+2. Install dependencies:  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Configure environment variables in a `.env` file:  
+   ```dotenv
+   CONSUMER_KEY=your_consumer_key
+   CONSUMER_SECRET=your_consumer_secret
+   MOBILE_NUMBER=your_mobile_number
+   PASSWORD=your_password
+   ```
+
+4. Run the app:  
+   ```bash
+   python app.py
+   ```
+
+5. Access the app at `http://127.0.0.1:5000`.
+
+---
+
+## Dependencies
+
+- Flask
+- Neo API Client
+- Python Dotenv
+
+---
+
+## Notes
+
+- Replace the dummy instrument token (`3499`) with a valid token for accurate trading operations.
+- The application is configured for the **production** environment (`prod`).
+- Ensure your Neo API credentials have sufficient permissions for trading.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
