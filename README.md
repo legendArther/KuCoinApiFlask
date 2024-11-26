@@ -101,7 +101,3 @@ This is a Flask-based Python application that interacts with the **Neo API** to 
 - Ensure your Neo API credentials have sufficient permissions for trading.
 
 ---
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
